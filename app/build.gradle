@@ -50,33 +50,40 @@ dependencies {
     implementation libs.androidx.activity
     implementation libs.androidx.constraintlayout
 
-    // Dependency Hilt
+    // * * * Dependency for Hilt * * * //
     implementation libs.hilt.android
     kapt libs.hilt.compiler
 
-    // exo player
+    // * * * Dependency for Exo Player * * * //
     implementation libs.androidx.media3.exoplayer
     implementation libs.androidx.media3.exoplayer.dash
     implementation libs.androidx.media3.ui
-//    implementation libs.media3.exoplayer.hls // For HLS support (optional)
+    implementation libs.media3.exoplayer.hls // For HLS support (optional)
 
 
-    // retrofit
+    // * * * Dependency for Retrofit * * * //
     api libs.retrofit
     api libs.converter.gson
 
-    // kotlin coroutine
+    // * * * Dependency for Kotlin Coroutine * * * //
     implementation libs.kotlinx.coroutines.android
     implementation libs.kotlinx.coroutines.core
 
-    // viewmodel & livedata
+    // * * * Dependency for Viewmodel & Livedata * * * //
     implementation libs.androidx.lifecycle.viewmodel.ktx
     implementation libs.androidx.lifecycle.extensions
     implementation libs.androidx.lifecycle.livedata.ktx
 
-    //Image loader library Glide
+    // * * * Dependency for Image loader library Glide * * * //
     implementation libs.glide
+    //noinspection KaptUsageInsteadOfKsp
     kapt libs.compiler
+
+    // * * * Dependency for Room Database * * * //
+    implementation libs.androidx.room.ktx
+    implementation libs.androidx.room.runtime
+    //noinspection KaptUsageInsteadOfKsp
+    kapt libs.androidx.room.compiler
 
     testImplementation libs.junit
     androidTestImplementation libs.androidx.junit
