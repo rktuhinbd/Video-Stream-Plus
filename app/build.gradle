@@ -4,6 +4,7 @@ plugins {
     id 'kotlin-kapt'
     id 'com.google.dagger.hilt.android'
     id 'kotlin-parcelize'
+    alias(libs.plugins.google.gms.google.services)
 }
 
 android {
@@ -50,6 +51,9 @@ dependencies {
     implementation libs.material
     implementation libs.androidx.activity
     implementation libs.androidx.constraintlayout
+
+    // * * * Dependency for Firebase Cloud Messaging * * * //
+    implementation libs.firebase.messaging
 
     // * * * Dependency for Hilt * * * //
     implementation libs.hilt.android

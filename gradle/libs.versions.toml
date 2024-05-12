@@ -24,6 +24,8 @@ media3ExoplayerHls = "1.3.1"
 retrofit = "2.9.0"
 roomKtx = "2.6.1"
 workRuntimeKtx = "2.9.0"
+googleGmsGoogleServices = "4.4.1"
+firebaseMessaging = "24.0.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -61,8 +63,10 @@ androidx-constraintlayout = { group = "androidx.constraintlayout", name = "const
 media3-exoplayer-core = { module = "androidx.media3:media3-exoplayer-core", version.ref = "media3ExoplayerCore" }
 media3-exoplayer-hls = { module = "androidx.media3:media3-exoplayer-hls", version.ref = "media3ExoplayerHls" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging", version.ref = "firebaseMessaging" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+google-gms-google-services = { id = "com.google.gms.google-services", version.ref = "googleGmsGoogleServices" }
 

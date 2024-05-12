@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "416410777244",
+    "project_id": "video-stream-plus",
+    "storage_bucket": "video-stream-plus.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:416410777244:android:1328f5644d327fb0c4df59",
+        "android_client_info": {
+          "package_name": "com.rktuhinbd.assessmenttask"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCp1n26x32586roC6unfQcH3aNEbx9IO6U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
