@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -19,6 +21,7 @@ import com.rktuhinbd.assessmenttask.home.model.ApiResponseItem
 import com.rktuhinbd.assessmenttask.home.model.VideoData
 import com.rktuhinbd.assessmenttask.home.viewmodel.MyViewModel
 import com.rktuhinbd.assessmenttask.home.viewmodel.RoomViewModel
+import com.rktuhinbd.assessmenttask.utils.NetworkUtils
 import com.rktuhinbd.assessmenttask.utils.ResponseHandler
 import com.rktuhinbd.assessmenttask.utils.TimeUtil
 import com.rktuhinbd.assessmenttask.video_player.VideoPlayerActivity
@@ -35,6 +38,7 @@ class MainActivity : AppCompatActivity() {
 
     private val TAG = "MainActivity"
 
+    private var backPressedOnce = false
     private val handler = Handler(Looper.getMainLooper())
     private val delay: Long = 5 * 60 * 1000 // 5 minutes in milliseconds
 
@@ -50,10 +54,13 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        myViewModel = ViewModelProvider(this)[MyViewModel::class.java]
-        roomViewModel = ViewModelProvider(this)[RoomViewModel::class.java]
+        initViewModels()
 
-        myViewModel.getVideos()
+        onBackPress()
+
+        initClickAction()
+
+        myViewModel.getVideos() //Api call
 
         dataObservers()
     }
@@ -92,6 +99,46 @@ class MainActivity : AppCompatActivity() {
         startTimer()
     }
 
+    private fun onBackPress() {
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (backPressedOnce) {
+                    // Exit the app if back button pressed again within 2 seconds
+                    finish()
+                } else {
+                    backPressedOnce = true
+                    showToast("Press back again to exit")
+                    // Reset backPressedOnce after 2 seconds
+                    isEnabled = false
+                    onBackPressedDelay()
+                }
+            }
+        }
+
+        // Add the callback to the back button dispatcher
+        onBackPressedDispatcher.addCallback(this, callback)
+    }
+
+    private fun onBackPressedDelay() {
+        // Reset backPressedOnce after 2 seconds
+        handler.postDelayed({ backPressedOnce = false }, 2000)
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun initClickAction() {
+        binding.ivBack.setOnClickListener {
+            onBackPressed()
+        }
+    }
+
+    private fun initViewModels() {
+        myViewModel = ViewModelProvider(this)[MyViewModel::class.java]
+        roomViewModel = ViewModelProvider(this)[RoomViewModel::class.java]
+    }
+
     private fun dataObservers() {
         lifecycleScope.launch {
             myViewModel.videoDataObserver.collectLatest {
@@ -116,9 +163,27 @@ class MainActivity : AppCompatActivity() {
                                 GsonBuilder().setPrettyPrinting().create().toJson(it.error?.msg)
                             }"
                         )
+
+                        setDataFromDatabase()
                     }
 
                     else -> Unit
+                }
+            }
+        }
+    }
+
+    private fun setDataFromDatabase() {
+        roomViewModel.dataObserver.observe(this@MainActivity) { data ->
+            if (data != null) {
+                setData(data.apiData)
+
+                if (!NetworkUtils.isInternetAvailable(this@MainActivity)) {
+                    Toast.makeText(
+                        this@MainActivity,
+                        "Internet Connection Unavailable!",
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             }
         }
