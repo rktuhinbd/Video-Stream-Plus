@@ -1,7 +1,9 @@
-package com.rktuhinbd.assessmenttask.home.di
+package com.rktuhinbd.assessmenttask.di
 
 import android.content.Context
-import com.rktuhinbd.assessmenttask.home.di.qualifier.RetrofitForVideo
+import com.rktuhinbd.assessmenttask.db.AppDB
+import com.rktuhinbd.assessmenttask.db.RoomDao
+import com.rktuhinbd.assessmenttask.di.qualifier.RetrofitForVideo
 import com.rktuhinbd.assessmenttask.home.repo.ApiService
 import com.rktuhinbd.assessmenttask.home.repo.MyRepo
 import dagger.Module
@@ -25,5 +27,11 @@ object ApiApplicationComponent {
     @Provides
     fun providesApiService(@RetrofitForVideo retrofit: Retrofit): ApiService {
         return retrofit.create(ApiService::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun providesRoomDBService(@ApplicationContext context: Context): RoomDao {
+        return AppDB.getDatabase(context).roomDao()
     }
 }

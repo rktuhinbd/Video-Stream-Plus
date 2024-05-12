@@ -1,7 +1,7 @@
-package com.rktuhinbd.assessmenttask.home.di
+package com.rktuhinbd.assessmenttask.di
 
 import com.rktuhinbd.assessmenttask.BuildConfig
-import com.rktuhinbd.assessmenttask.home.di.qualifier.RetrofitForVideo
+import com.rktuhinbd.assessmenttask.di.qualifier.RetrofitForVideo
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

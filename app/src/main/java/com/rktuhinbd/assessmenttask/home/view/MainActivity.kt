@@ -12,9 +12,13 @@ import androidx.lifecycle.lifecycleScope
 import com.google.gson.GsonBuilder
 import com.rktuhinbd.assessmenttask.R
 import com.rktuhinbd.assessmenttask.databinding.ActivityMainBinding
+import com.rktuhinbd.assessmenttask.home.model.ApiResponse
 import com.rktuhinbd.assessmenttask.home.model.ApiResponseItem
+import com.rktuhinbd.assessmenttask.home.model.VideoData
 import com.rktuhinbd.assessmenttask.home.viewmodel.MyViewModel
+import com.rktuhinbd.assessmenttask.home.viewmodel.RoomViewModel
 import com.rktuhinbd.assessmenttask.utils.ResponseHandler
+import com.rktuhinbd.assessmenttask.utils.TimeUtil
 import com.rktuhinbd.assessmenttask.video_player.VideoPlayerActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -25,6 +29,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var myViewModel: MyViewModel
+    private lateinit var roomViewModel: RoomViewModel
 
     private val TAG = "MainActivity"
 
@@ -41,6 +46,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         myViewModel = ViewModelProvider(this)[MyViewModel::class.java]
+        roomViewModel = ViewModelProvider(this)[RoomViewModel::class.java]
 
         myViewModel.getVideos()
 
@@ -57,6 +63,7 @@ class MainActivity : AppCompatActivity() {
 
                     is ResponseHandler.Success -> {
                         if (it.data != null) {
+                            storeDataToDB(it.data)
                             setData(it.data)
                         }
                         //Hide Shimmer or Loader
@@ -76,6 +83,11 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun storeDataToDB(data: ApiResponse) {
+        val roomData = VideoData(date = TimeUtil.getCurrentDateTime(), apiData = data)
+        roomViewModel.insertData(roomData)
     }
 
     private fun setData(data: List<ApiResponseItem>) {

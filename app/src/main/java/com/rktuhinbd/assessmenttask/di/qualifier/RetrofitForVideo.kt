@@ -1,4 +1,4 @@
-package com.rktuhinbd.assessmenttask.home.di.qualifier
+package com.rktuhinbd.assessmenttask.di.qualifier
 
 import javax.inject.Qualifier
 

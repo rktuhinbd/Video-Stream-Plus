@@ -2,7 +2,10 @@ package com.rktuhinbd.assessmenttask.home.model
 
 
 import com.google.gson.annotations.SerializedName
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class ApiResponseItem(
     @SerializedName("author")
     val author: String = "",
@@ -26,4 +29,4 @@ data class ApiResponseItem(
     val videoUrl: String = "",
     @SerializedName("views")
     val views: String = ""
-)
+) : Parcelable
