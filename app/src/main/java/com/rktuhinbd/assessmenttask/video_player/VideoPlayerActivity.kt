@@ -59,6 +59,21 @@ class VideoPlayerActivity : AppCompatActivity() {
         playerView.player = player
     }
 
+//    override fun onResume() {
+//        super.onResume()
+//        player.play()
+//    }
+
+    override fun onPause() {
+        super.onPause()
+        player.pause()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        player.stop()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         player.release() // Release the player when the activity is destroyed
