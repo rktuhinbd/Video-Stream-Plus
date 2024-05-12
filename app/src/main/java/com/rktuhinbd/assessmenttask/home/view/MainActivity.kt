@@ -2,6 +2,8 @@ package com.rktuhinbd.assessmenttask.home.view
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -33,6 +35,9 @@ class MainActivity : AppCompatActivity() {
 
     private val TAG = "MainActivity"
 
+    private val handler = Handler(Looper.getMainLooper())
+    private val delay: Long = 5 * 60 * 1000 // 5 minutes in milliseconds
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -51,6 +56,40 @@ class MainActivity : AppCompatActivity() {
         myViewModel.getVideos()
 
         dataObservers()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        startTimer()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        stopTimer()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        stopTimer()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        stopTimer()
+    }
+
+    private fun startTimer() {
+        handler.postDelayed(timerRunnable, delay)
+    }
+
+    private fun stopTimer() {
+        handler.removeCallbacks(timerRunnable)
+    }
+
+    private val timerRunnable = Runnable { //Calls api after every 5 minutes
+        myViewModel.getVideos()
+        // Restart the timer
+        startTimer()
     }
 
     private fun dataObservers() {
