@@ -19,7 +19,7 @@ class RoomViewModel @Inject constructor(
 
     fun insertData(data: VideoData) {
         viewModelScope.launch {
-            roomDao.insertQuiz(data)
+            roomDao.insertData(data)
         }
     }
 }
