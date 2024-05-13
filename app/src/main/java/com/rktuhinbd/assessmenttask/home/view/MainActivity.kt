@@ -8,10 +8,10 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.google.gson.GsonBuilder
 import com.rktuhinbd.assessmenttask.R
@@ -32,7 +32,7 @@ import kotlinx.coroutines.launch
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var myViewModel: MyViewModel
+    private val myViewModel: MyViewModel by viewModels()
 
     private val TAG = "MainActivity"
 
@@ -51,8 +51,6 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
-        myViewModel = ViewModelProvider(this)[MyViewModel::class.java]
 
         onBackPress()
 
