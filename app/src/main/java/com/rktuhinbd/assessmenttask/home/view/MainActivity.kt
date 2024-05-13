@@ -20,7 +20,6 @@ import com.rktuhinbd.assessmenttask.home.model.ApiResponse
 import com.rktuhinbd.assessmenttask.home.model.ApiResponseItem
 import com.rktuhinbd.assessmenttask.home.model.VideoData
 import com.rktuhinbd.assessmenttask.home.viewmodel.MyViewModel
-import com.rktuhinbd.assessmenttask.home.viewmodel.RoomViewModel
 import com.rktuhinbd.assessmenttask.utils.NetworkUtils
 import com.rktuhinbd.assessmenttask.utils.ResponseHandler
 import com.rktuhinbd.assessmenttask.utils.TimeUtil
@@ -34,7 +33,6 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var myViewModel: MyViewModel
-    private lateinit var roomViewModel: RoomViewModel
 
     private val TAG = "MainActivity"
 
@@ -54,7 +52,7 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        initViewModels()
+        myViewModel = ViewModelProvider(this)[MyViewModel::class.java]
 
         onBackPress()
 
@@ -134,11 +132,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun initViewModels() {
-        myViewModel = ViewModelProvider(this)[MyViewModel::class.java]
-        roomViewModel = ViewModelProvider(this)[RoomViewModel::class.java]
-    }
-
     private fun dataObservers() {
         lifecycleScope.launch {
             myViewModel.videoDataObserver.collectLatest {
@@ -174,7 +167,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setDataFromDatabase() {
-        roomViewModel.dataObserver.observe(this@MainActivity) { data ->
+        myViewModel.dataObserver.observe(this@MainActivity) { data ->
             if (data != null) {
                 setData(data.apiData)
 
@@ -191,7 +184,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun storeDataToDB(data: ApiResponse) {
         val roomData = VideoData(date = TimeUtil.getCurrentDateTime(), apiData = data)
-        roomViewModel.insertData(roomData)
+        myViewModel.insertData(roomData)
     }
 
     private fun setData(data: List<ApiResponseItem>) {

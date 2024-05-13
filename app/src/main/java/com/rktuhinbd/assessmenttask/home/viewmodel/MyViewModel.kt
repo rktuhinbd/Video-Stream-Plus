@@ -1,8 +1,11 @@
 package com.rktuhinbd.assessmenttask.home.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.rktuhinbd.assessmenttask.db.RoomDao
 import com.rktuhinbd.assessmenttask.home.model.ApiResponse
+import com.rktuhinbd.assessmenttask.home.model.VideoData
 import com.rktuhinbd.assessmenttask.home.repo.MyRepo
 import com.rktuhinbd.assessmenttask.utils.ErrorHandler
 import com.rktuhinbd.assessmenttask.utils.ResponseHandler
@@ -18,7 +21,10 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class MyViewModel @Inject constructor(private val myRepo: MyRepo) : ViewModel() {
+class MyViewModel @Inject constructor(
+    private val myRepo: MyRepo,
+    private val roomDao: RoomDao
+) : ViewModel() {
 
     /** Get Video Data **/
     private val _videoData =
@@ -35,6 +41,15 @@ class MyViewModel @Inject constructor(private val myRepo: MyRepo) : ViewModel() 
                 .collectLatest {
                     _videoData.emit(it)
                 }
+        }
+    }
+
+    /** Room Database **/
+    val dataObserver: LiveData<VideoData> = roomDao.getApiData()
+
+    fun insertData(data: VideoData) {
+        viewModelScope.launch {
+            roomDao.insertData(data)
         }
     }
 
